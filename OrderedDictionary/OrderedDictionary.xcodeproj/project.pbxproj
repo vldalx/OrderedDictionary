@@ -10,6 +10,7 @@
 		565949A51EC8C12C000AE300 /* OrderedDictionary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5659499B1EC8C12C000AE300 /* OrderedDictionary.framework */; };
 		565949AA1EC8C12C000AE300 /* OrderedDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565949A91EC8C12C000AE300 /* OrderedDictionaryTests.swift */; };
 		565949AC1EC8C12C000AE300 /* OrderedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = 5659499E1EC8C12C000AE300 /* OrderedDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		565949B61EC8C20D000AE300 /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565949B51EC8C20D000AE300 /* OrderedDictionary.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,7 @@
 		565949A41EC8C12C000AE300 /* OrderedDictionaryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OrderedDictionaryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		565949A91EC8C12C000AE300 /* OrderedDictionaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedDictionaryTests.swift; sourceTree = "<group>"; };
 		565949AB1EC8C12C000AE300 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		565949B51EC8C20D000AE300 /* OrderedDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedDictionary.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 			children = (
 				5659499E1EC8C12C000AE300 /* OrderedDictionary.h */,
 				5659499F1EC8C12C000AE300 /* Info.plist */,
+				565949B51EC8C20D000AE300 /* OrderedDictionary.swift */,
 			);
 			path = OrderedDictionary;
 			sourceTree = "<group>";
@@ -149,6 +152,7 @@
 					5659499A1EC8C12C000AE300 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = 8Z35TU97D6;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 					565949A31EC8C12C000AE300 = {
@@ -198,6 +202,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				565949B61EC8C20D000AE300 /* OrderedDictionary.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,6 +329,7 @@
 		565949B01EC8C12C000AE300 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 8Z35TU97D6;
@@ -336,6 +342,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.vldalx.OrderedDictionary;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -343,6 +350,7 @@
 		565949B11EC8C12C000AE300 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 8Z35TU97D6;
@@ -362,6 +370,7 @@
 		565949B31EC8C12C000AE300 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = 8Z35TU97D6;
 				INFOPLIST_FILE = OrderedDictionaryTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -374,6 +383,7 @@
 		565949B41EC8C12C000AE300 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = 8Z35TU97D6;
 				INFOPLIST_FILE = OrderedDictionaryTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
