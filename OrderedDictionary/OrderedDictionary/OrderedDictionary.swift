@@ -259,12 +259,13 @@ public struct OrderedDictionary<Key: Hashable, Value>: BidirectionalCollection {
     public mutating func update(_ newElement: Element, at index: Index) -> Element? {
         let keyIndex = orderedKeys.index(of: newElement.key)
 
-        precondition(keyIndex == index, "OrderedDictionary update duplicates key")
+        precondition(keyIndex == NSNotFound || keyIndex == index , "OrderedDictionary update duplicates key")
         
-        let key = orderedKeys.object(at: keyIndex) as! Key
-        let value = keysToValues.updateValue(newElement.value, forKey: newElement.key)
+        let key = orderedKeys.object(at: index) as! Key
+        let value = keysToValues.removeValue(forKey: key)
+        keysToValues[newElement.key] = newElement.value
         
-        orderedKeys.replaceObject(at: keyIndex, with: newElement.key)
+        orderedKeys.replaceObject(at: index, with: newElement.key)
         
         return (key, value!)
     }
@@ -279,6 +280,7 @@ public struct OrderedDictionary<Key: Hashable, Value>: BidirectionalCollection {
     @discardableResult
     public mutating func remove(at index: Index) -> Element {
         let key = orderedKeys.object(at: index) as! Key
+        orderedKeys.removeObject(at: index)
         let value = keysToValues.removeValue(forKey: key)!
         return (key, value)
     }
@@ -400,7 +402,7 @@ extension OrderedDictionary where Value: Equatable {
     /// Returns a Boolean value that indicates whether the two given ordered dictionaries with
     /// equatable values are equal.
     public static func == (lhs: OrderedDictionary, rhs: OrderedDictionary) -> Bool {
-        return lhs.orderedKeys.isEqual(to: rhs.orderedKeys) && lhs.keysToValues.values.elementsEqual(rhs.keysToValues.values)
+        return lhs.orderedKeys.isEqual(to: rhs.orderedKeys) && lhs.keysToValues == rhs.keysToValues
     }
     
 }
