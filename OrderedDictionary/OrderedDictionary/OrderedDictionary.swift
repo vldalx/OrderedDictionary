@@ -8,6 +8,11 @@
 
 import Foundation
 
+/// A generic collection for storing key-value pairs in an ordered manner.
+///
+/// Same as in a dictionary all keys in the collection are unique and have an associated value.
+/// Same as in an array, all key-value pairs (elements) are kept sorted and accessible by
+/// a zero-based integer index.
 public struct OrderedDictionary<Key: Hashable, Value>: BidirectionalCollection {
 
     // ======================================================= //
@@ -187,9 +192,21 @@ public struct OrderedDictionary<Key: Hashable, Value>: BidirectionalCollection {
     ///
     /// - SeeAlso: update(:at:)
     public subscript(position: Index) -> Element {
-        precondition(position < endIndex, "OrderedDictionary index is out of range")
-
-        let key = orderedKeys.object(at: position) as! Key
+        return element(at: position)
+    }
+    
+    /// Accesses the key-value pair at the specified position.
+    ///
+    /// The specified position has to be a valid index of the ordered dictionary.
+    /// Returns the key-value pair corresponding to the index.
+    ///
+    /// - Parameter at: The position of the key-value pair to access. `at` must be a valid
+    ///   index of the ordered dictionary and not equal to `endIndex`.
+    /// - Returns: A tuple containing the key-value pair corresponding to `at`.
+    public func element(at index: Index) -> Element {
+        precondition(index < endIndex, "OrderedDictionary index is out of range")
+        
+        let key = orderedKeys.object(at: index) as! Key
         let value = keysToValues[key]
         
         return (key, value!)
@@ -278,10 +295,17 @@ public struct OrderedDictionary<Key: Hashable, Value>: BidirectionalCollection {
     ///   ordered before its second argument; otherwise, `false`.
     ///
     /// - SeeAlso: MutableCollection.sort(by:), sorted(by:)
-    public mutating func sort(by areInIncreasingOrder: (Element, Element) -> Bool)
-    {
-        preconditionFailure("Not implemented")
-        //        _orderedKeys = _sortedElements(by: areInIncreasingOrder).map { $0.key }
+    public mutating func sort(by areInIncreasingOrder: (Element, Element) -> Bool) {
+        orderedKeys.sort(comparator: {
+            (l: Any, r: Any) -> ComparisonResult in
+            let lKey = l as! Key
+            let rKey = r as! Key
+            let lValue = keysToValues[lKey]!
+            let rValue = keysToValues[rKey]!
+            return areInIncreasingOrder((lKey, lValue), (rKey, rValue))
+                ? .orderedAscending
+                : .orderedDescending
+            })
     }
     
     /// Returns a new ordered dictionary, sorted using the given predicate as the comparison between
@@ -295,14 +319,11 @@ public struct OrderedDictionary<Key: Hashable, Value>: BidirectionalCollection {
     ///
     /// - SeeAlso: MutableCollection.sorted(by:), sort(by:)
     /// - MutatingVariant: sort
-    public func sorted(by areInIncreasingOrder: (Element, Element) -> Bool) -> OrderedDictionary<Key, Value> {
-        return OrderedDictionary(_sortedElements(by: areInIncreasingOrder))
+    public func sorted(by areInIncreasingOrder: (Element, Element) -> Bool) -> OrderedDictionary {
+        let sortedElementsArray: [Element] = self.sorted(by: areInIncreasingOrder)
+        return OrderedDictionary<Key, Value>(sortedElementsArray)
     }
-    
-    private func _sortedElements(by areInIncreasingOrder: (Element, Element) -> Bool) -> [Element] {
-        return sorted(by: areInIncreasingOrder)
-    }
-    
+
     // ======================================================= //
     // MARK: - Slices
     // ======================================================= //
@@ -379,7 +400,7 @@ extension OrderedDictionary where Value: Equatable {
     /// Returns a Boolean value that indicates whether the two given ordered dictionaries with
     /// equatable values are equal.
     public static func == (lhs: OrderedDictionary, rhs: OrderedDictionary) -> Bool {
-        return lhs.orderedKeys == rhs.orderedKeys && lhs.keysToValues == rhs.keysToValues
+        return lhs.orderedKeys.isEqual(to: rhs.orderedKeys) && lhs.keysToValues.values.elementsEqual(rhs.keysToValues.values)
     }
     
 }
