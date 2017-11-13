@@ -93,14 +93,14 @@ class OrderedDictionaryTests: XCTestCase {
         dict[2] = "2"
         dict[3] = "3"
 
-        dict.sort(by: { $0.0.key > $0.1.key })
+        dict.sort(by: { $0.key > $1.key })
 
         XCTAssertEqual(dict.last!.key, 1)
         XCTAssertEqual(dict.last!.value, "1")
         XCTAssertEqual(dict.first!.key, 3)
         XCTAssertEqual(dict.first!.value, "3")
         
-        dict = dict.sorted(by: { $0.0.key < $0.1.key })
+        dict = dict.sorted(by: { $0.key < $1.key })
         
         XCTAssertEqual(dict.last!.key, 3)
         XCTAssertEqual(dict.last!.value, "3")
